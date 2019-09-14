@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "AdminPage";
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/scripts/bootstrap.min.js"></script>
+    <link href="~/Content/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <script src="~/scripts/jquery.dataTables.min.js"></script>
+    <script src="~/scripts/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#DataTable').DataTable();
+            $('#checkBoxAll').click(function () {
+                if ($(this).is(":checked")) {
+                    $(".chkCheckBoxId").prop("checked", true)
+                }
+                else {
+                    $(".chkCheckBoxId").prop("checked", false)
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container py-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5>Users List</h5>
+            </div>
+            <div class="card-body">
+
+
+                @using (Html.BeginForm("MyAction", "Home", FormMethod.Post))
+                {
+                    <button name="action" type="submit" value="Del" class="btn btn-sm btn-danger rounded-0" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o"></i> Delete</button>
+                    <button name="action" type="submit" value="Lock" class="btn btn-sm btn-danger rounded-0" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o"></i> Lock</button>
+                    <button name="action" type="submit" value="UnLock" class="btn btn-sm btn-danger rounded-0" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o"></i> UnLock</button>
+
+                    <br /><br />
+                    <table id="DataTable" style="width:100%;" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                                <th>EMP ID</th>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Enable</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var employee in ViewBag.ListEmployee)
+                            {
+                                <tr>
+                                    <td><input type="checkbox" name="ID" value="@employee.Id" class="custom-checkbox chkCheckBoxId" /></td>
+                                    <td>@employee.Id</td>
+                                    <td>@employee.Email</td>
+                                    <td>@employee.PasswordHash</td>
+                                    <td>@employee.IsEnable</td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+                
+        </div>
+    </div>
+</body>
+</html>  

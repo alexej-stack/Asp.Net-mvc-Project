@@ -1,0 +1,115 @@
+﻿@model Task2.Models.BigModel
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+<script type="text/javascript">
+    function ValidateForm() {
+        var txt1 = document.getElementById('ImageName');
+        if (txt1.value == '') {
+            alert("Enter Image Name !")
+            document.getElementById("ImageName").focus();
+            return false;
+        }
+
+        var uploadfile = document.getElementById('ImageData');
+
+        if (uploadfile.value == '') {
+            alert('Please upload the attachment');
+            uploadfile.focus();
+            return false;
+        }
+
+        var fname = uploadfile.value;
+        var ext = fname.split(".");
+        var x = ext.length;
+        var extstr = ext[x - 1].toLowerCase();
+        if (extstr == 'jpg' || extstr == 'jpeg' || extstr == 'png' || extstr == 'gif') { }
+        else {
+            alert("Please upload valid image");
+            uploadfile.focus();
+            return false;
+        }
+
+        alert("Image uploaded sucessfully");
+    }
+</script>
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Company</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Company.tName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Company.tName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Company.tName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Company.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Company.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Company.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div style="width: 600px;">
+            @using (Html.BeginForm("Index", "ManageAlbums", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                <fieldset style="border-color: Red;">
+                    <legend>Create Albums</legend>
+                    <table>
+                        <tr>
+                            <td>
+                                Album Name :
+                            </td>
+                            <td>
+                                @Html.TextBox("ImageName", "", new { style = "width:200px" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Image :
+                        </td>
+                        <td>
+                            <input type="file" name="ImageData" id="ImageData" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" name="submit" value="Upload" onclick="return ValidateForm()" />
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        }
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Company.Tematic, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.Company.Tematic, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Company.Tematic, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+       
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

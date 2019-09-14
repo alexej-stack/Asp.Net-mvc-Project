@@ -1,0 +1,74 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+
+.commentBox {
+    background-color: #efefef;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.starFade {
+    background-image: url('/Images/StarFade.gif');
+    min-width: 30px;
+    min-height: 30px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.starFadeN {
+    background-image: url('/Images/StarFade.gif');
+    min-width: 30px;
+    min-height: 30px;
+    display: inline-block;
+}
+
+.starGlow {
+    background-image: url('/Images/starglow.gif');
+    min-width: 30px;
+    min-height: 30px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.starGlowN {
+    background-image: url('/Images/starglow.gif');
+    min-width: 30px;
+    min-height: 30px;
+    display: inline-block;
+}
+.imageclass {
+    max-width: 100%;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.thumbmain {
+    margin: 3px;
+    border: 1px solid #A0ACC0;
+    height: auto;
+    float: left;
+    text-align: center;
+}
+
+.thumbimg {
+
+    margin: 5px;
+    border: 1px solid #A0ACC0;
+}
