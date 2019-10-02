@@ -1,7 +1,9 @@
 ﻿@model Task2.Models.Company
 <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<script src="~/Scripts/ckfinder/ckfinder.js"></script>
 @{
-    /**/
+
 
     ViewBag.Title = Model.tName;
     var comments = (IEnumerable<Task2.Models.CompanyComment>)ViewBag.Comments;
@@ -24,44 +26,67 @@
     <div class="td">Html.Partial("_VoteShow", Model.Votes)</div>
 </div>-->
 <div>
-  
+
     <hr />
     <dl class="dl-horizontal">
 
 
         <dd>
-            @Html.DisplayFor(model => model.tName)
+            @Html.Raw(Model.tName)
         </dd>
 
 
 
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.Raw(Model.Description)
         </dd>
 
 
 
         <dd>
-            @Html.DisplayFor(model => model.UserImage)
+            @Html.Raw(Model.UserImage)
         </dd>
+        
+        <dd>
+            @Html.Raw(Model.Video)
+        </dd>
+
 
 
         <dd>
             @Html.DisplayFor(model => model.Tematic)
         </dd>
 
-
-
-
-
+        <dd>
+            @Html.Raw(Model.Galery)
+        </dd>
     </dl>
 </div>
 
+
+<script type="text/javascript">
+
+    $(function () {
+        $('#UserImage').ckeditor();
+    });
+    $(function () {
+        $('#tName').ckeditor();
+    });
+    $(function () {
+        $('#Description').ckeditor();
+    });
+    $(function () {
+        $('#Galery').ckeditor();
+    });
+    $(function () {
+        $('#Video').ckeditor();
+    });
+</script>
 <p>
-  
+
     @Html.ActionLink("Back to List", "Index")
 </p>
-
+<input type="button" value="AddBonus" onclick="location.href='@Url.Action("ButtonAddBonus1", "Manage")'" />
 @foreach (var c in comments)
 {
     <hr />

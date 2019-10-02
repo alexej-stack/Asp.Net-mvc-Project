@@ -24,8 +24,9 @@ namespace Task2.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+     
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("NewCon", throwIfV1Schema: false)
         {
         }
 
@@ -33,9 +34,7 @@ namespace Task2.Models
         {
             return new ApplicationDbContext();
         }
-        public DbSet<AspNetUser> AspNetUsers { get; set; }
-        public System.Data.Entity.DbSet<Task2.Models.VoteLog> VoteLogs { get; set; }
-        public System.Data.Entity.DbSet<Task2.Models.Company> Companies { get; set; }
+       
         public System.Data.Entity.DbSet<Task2.Models.CompanyComment> CompanyComments { get; set; }
     }
 }

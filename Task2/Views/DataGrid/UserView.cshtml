@@ -1,0 +1,9 @@
+﻿@using EJS
+@Html.EJS().Grid("DataGrid").DataSource((IEnumerable<object>)ViewBag.dataSource).AllowResizing(true).AllowSorting().Columns(col=> {
+    col.Field("ID").IsPrimaryKey(true).Add();
+    col.Field("FirstName").Add();
+    col.Field("LastName").Add();
+    col.Field("DOB").Add();
+}).AllowPaging().Toolbar(new List<string>() { "Search" , "Add", "Edit", "Delete", "Update", "Cancel" }).Render()
+
+

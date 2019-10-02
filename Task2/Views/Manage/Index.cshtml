@@ -1,29 +1,17 @@
 ﻿@model PagedList.IPagedList<Task2.Models.Company>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<script src="~/Scripts/ckfinder/ckfinder.js"></script>
 
-<!--
+@{
+    var users = (List<Task2.Models.UserProfile>)ViewBag.ListUser;
+    var Modell = (List<Task2.Models.UserProfile>)ViewBag.ListUser;
+    WebGrid grid = new WebGrid(Modell, rowsPerPage: 10);
 
-{
-    ViewBag.Title = "LOL";
-    WebGrid grid = new WebGrid(Model, rowsPerPage: 10);
-}
+ }
+    
 
-<h2>ViewBag.Title.</h2>
-<script type="text/javascript">
-
-    $(document).ready(function () {
-        $('#DataTable').DataTable();
-        $('#checkBoxAll').click(function () {
-            if ($(this).is(":checked")) {
-                $(".chkCheckBoxId").prop("checked", true)
-            }
-            else {
-                $(".chkCheckBoxId").prop("checked", false)
-            }
-        });
-    });
-</script>-->
 <html>
 <head>
     <script type="text/javascript" src="@Url.Content("~/Scripts/")jquery-3.4.1.js"></script>
@@ -40,30 +28,52 @@
                 }
             });
         });
-        /* $('#selectAll').click(function (e) {
-             var table = $(e.target).closest('table');
-             $('td input:checkbox', table).prop('checked', this.checked);
-         });*/
-        /* $(document).on('click', '.select-all', function (e) {
-             var table = $(this).closest('table');
-             table.find(':checkbox').not(this).prop('checked', this.checked);
-         });*/
-        /* $("checkall").change(function () {
-                 $(".checkitem").prop("checked", this.prop("checked"))
-             })
-         $(".checkitem").change(function () {
-             if ($(this).prop("checked") == false) {
-                 $("#checkall").prop("cheked", false)
-             }
-             if ($(".chekitem:cheked").length == $(".chekitem").length) {
-                 $("#checkall").prop("cheked", true)
-             }
-             })*/
+       
     </script>
+
 </head>
 <body>
+    <!--  <div class="row">
+          @@grid.GetHtml(
+              tableStyle:"table table-responsive table-striped table-bordered",
+              columns: grid.Columns(
+                  grid.Column(header:"First Name", format:@@<text><div class="edit" data-id="@@item.ID" data-propertyname="FirstName">@@item.FirstName</div></text>),
+                          grid.Column(header: "Last Name", format:@@<text><div class="edit" data-id="@@item.ID" data-propertyname="LastName">@@item.LastName</div></text>),
+                                          grid.Column(header: "DOB", format:@@<text><div class="editDate" data-id="@@item.ID" data-propertyname="DOB">@@string.Format("{0:dd-MMM-yyyy}", item.DOB)</div></text>)
+                                              )
+                                          )
+      </div>
+      <style>
+          .table td {
+              width: 25%;
+          }
+      </style>
+    -->
+    <!--@@Html.Partial("UserProfile")-->
+    <div class="dl-horizontal">
+        <table id="DataTable" style="width:100%;" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bonus in ViewBag.ListBonus)
+                {
+                    <tr>
+                        <td><input type="checkbox" name="ID" value="@bonus.Id" class="custom-checkbox chkCheckBoxId" /></td>
+                        <td>@bonus.Name</td>
+                        <td>@bonus.price</td>
+
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
     <h4>Список оплаченных бонусов(пока нет)</h4>
-   
     <div class="dl-horizontal">
         <table id="DataTable" style="width:100%;" class="table table-bordered">
             <thead>
@@ -73,26 +83,27 @@
                     <th>Name</th>
                     <th>Price</th>
 
-
-
                 </tr>
             </thead>
             <tbody>
                 @foreach (var bonus in ViewBag.ListBonus)
                 {
-                <tr>
-                    <td><input type="checkbox" name="ID" value="@bonus.Id" class="custom-checkbox chkCheckBoxId" /></td>
-                    <td>@bonus.Name</td>
-                    <td>@bonus.price</td>
+                    <tr>
+                        <td><input type="checkbox" name="ID" value="@bonus.Id" class="custom-checkbox chkCheckBoxId" /></td>
+                        <td>@bonus.Name</td>
+                        <td>@bonus.price</td>
 
 
-                </tr>
+                    </tr>
                 }
             </tbody>
         </table>
+
     </div>
     <div>@Html.ActionLink("Create", "Create") </div>
     <div>@Html.ActionLink("CreateBonus", "CreateBonus") </div>
+
+
     <div>
         @using (Html.BeginForm("Index", "Manage", FormMethod.Get))
         {
@@ -119,6 +130,7 @@
                             <tr>
                                 <td><input type="checkbox" class="chkCheckBoxId" /></td>
                                 <td>@Html.DisplayFor(modelItem => tematic.tName)</td>
+
                                 <td>@Html.DisplayFor(modelItem => tematic.Description)</td>
                                 <td>@Html.DisplayFor(modelItem => tematic.Tematic)</td>
                                 <td>
@@ -131,66 +143,58 @@
                     </tbody>
                 </table>
             </div>
+
+            <script type="text/javascript">
+
+                $(function () {
+                    $('#UserImage').ckeditor();
+                });
+                $(function () {
+                    $('#tName').ckeditor();
+                });
+                $(function () {
+                    $('#Description').ckeditor();
+                });
+                $(function () {
+                    $('#Galery').ckeditor();
+                });
+                $(function () {
+                    $('#Video').ckeditor();
+                });
+            </script>
             <div>
                 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
                 @Html.PagedListPager(Model, page => Url.Action("Index",
                     new { page, sortOrder = ViewBag.CurrentSort }))
             </div>
-            <h4>Список бонусов компаний</h4>
-            <div class="dl-horizontal">
-                <table id="DataTable" style="width:100%;" class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" id="select-all" class="custom-checkbox" /></th>
 
-                            <th>Name</th>
-                            <th>Price</th>
-
-
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var bonus in ViewBag.ListBonus)
-                        {
-                            <tr>
-                                <td><input type="checkbox" name="ID" value="@bonus.Id" class="custom-checkbox chkCheckBoxId" /></td>
-                                <td>@bonus.Name</td>
-                                <td>@bonus.price</td>
-
-
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
         }
         <!--
-    <h2>Профиль участника</h2>
-    <hr />
-    <div class="row">
-        grid.GetHtml(
-            tableStyle:"table table-responsive table-striped table-bordered",
-            columns: grid.Columns(
-                grid.Column(header:"First Name", format:<text><div class="edit" data-id="item.ID" data-propertyname="FirstName">item.FirstName</div></text>),
-                                          grid.Column(header: "Last Name", format:<text><div class="edit" data-id="item.ID" data-propertyname="LastName">item.LastName</div></text>),
-                                                               grid.Column(header: "DOB", format:<text><div class="editDate" data-id="item.ID" data-propertyname="DOB">string.Format("{0:dd-MMM-yyyy}", item.DOB)</div></text>)
+        <h2>Профиль участника</h2>
+        <hr />
+        <div class="row">
+            grid.GetHtml(
+                tableStyle:"table table-responsive table-striped table-bordered",
+                columns: grid.Columns(
+                    grid.Column(header:"First Name", format:<text><div class="edit" data-id="item.ID" data-propertyname="FirstName">item.FirstName</div></text>),
+                                              grid.Column(header: "Last Name", format:<text><div class="edit" data-id="item.ID" data-propertyname="LastName">item.LastName</div></text>),
+                                                                   grid.Column(header: "DOB", format:<text><div class="editDate" data-id="item.ID" data-propertyname="DOB">string.Format("{0:dd-MMM-yyyy}", item.DOB)</div></text>)
+                                                                                            )
                                                                                         )
-                                                                                    )
-    </div>
-    <style>
-        .table td {
-            width: 25%;
-        }
-    </style>
-        -->
+        </div>
+        <style>
+            .table td {
+                width: 25%;
+            }
+        </style>
+            -->
         @section scripts{
             <script src="https://www.appelsiini.net/download/jquery.jeditable.js"></script>
             <script>
                 $(document).ready(function () {
                     var oldValue = '';
-                    $('.edit').editable('/home/saveuser', {
+                    $('.edit').editable('/manage/saveuser', {
                         cssclass: 'jeditForm',
                         tooltip: 'click to edit me...',
                         width: 'none',

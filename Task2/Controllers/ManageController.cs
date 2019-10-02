@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Newtonsoft.Json.Linq;
 using Task2.Models;
+using Korzh.EasyQuery.Linq;
 
 namespace Task2.Controllers
 {
@@ -83,40 +84,40 @@ namespace Task2.Controllers
         public ActionResult Bonus()
         {
             ViewBag.ListBonus = this.db.Bonus.ToList();
-            ViewBag.ListCompanies = this.db.Companies.ToList();
             return View();
            
         }
         //
-        // GET: /Manage/Index
-        //[Authorize(Roles = "admin")]
-       /*[HttpGet]
-        public ActionResult Index()
+        
+
+
+     
+        [HttpGet]
+        public ActionResult InPlace()
         {
-            ViewBag.ListCompanies = this.db.Companies./*Include(x=>x.aspNetUser).ToList();
-            ViewBag.ListBonus = this.db.Bonus.Include(x => x.aspNetUser).ToList();
-           // ViewBag.ListUser = this.db.UserProfiles.ToList();
+            
+            ViewBag.ListUser = this.db.UserProfiles.ToList();
 
-            //return View();
-            /* List<UserProfile> list = new List<UserProfile>();
-             using (AspContext dc = new AspContext())
-             {
-                 var v = (from a in dc.UserProfiles.AsEnumerable()
-                          orderby a.ID
+             //return View();
+              List<UserProfile> list = new List<UserProfile>();
+              using (AspContext dc = new AspContext())
+              {
+                  var v = (from a in dc.UserProfiles.AsEnumerable()
+                           orderby a.ID
 
 
-                          select new UserProfile 
-                          {
-                              ID = a.ID,
-                              FirstName = a.FirstName,
-                               LastName = a.LastName,
-                                DOB =a.DOB,
+                           select new UserProfile 
+                           {
+                               ID = a.ID,
+                               FirstName = a.FirstName,
+                                LastName = a.LastName,
+                                 DOB =a.DOB,
 
-                          });
-                 list = v.ToList();
-             }
-            return View(/*list);
-        }
+                           });
+                  list = v.ToList();
+              }
+             return View(list);
+         }
 
         [HttpPost]
         public ActionResult saveuser(int id, string propertyName, string value)
@@ -144,17 +145,8 @@ namespace Task2.Controllers
             JObject o = JObject.FromObject(response);
             return Content(o.ToString());
         }
-    
-    /*  private IAuthenticationManager AuthenticationManager
-      {
-          get
-          {
-              return HttpContext.GetOwinContext().Authentication;
-          }
-      }*/
-    [HttpPost]
 
-        
+        [HttpPost]
         public ActionResult CreateProfile()
         {
             return View(new UserProfile());
@@ -163,7 +155,11 @@ namespace Task2.Controllers
         [HttpGet]
         public ActionResult Company()
         {
-            ViewBag.ListCompanies = this.db.Companies.ToList();
+            IQueryable<Company>  ListCompanies =db.Companies;
+            if (User.Identity.GetUserId() != null )
+            {
+                ListCompanies = ListCompanies.Where(p => p.aspNetUser == User.Identity.GetUserId());
+            }
             return View();
         }
         [HttpPost]
@@ -283,9 +279,11 @@ namespace Task2.Controllers
             db.SaveChanges();
             return RedirectToAction("Index","Manage");
         }
-
+        [ ValidateInput(false)]
         public ActionResult Details(int? id)
         {
+            AspContext db = new AspContext();
+            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -320,13 +318,14 @@ namespace Task2.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateBonus([Bind(Include = "Id,Name,Price")]Bonus bonus)
+        public ActionResult CreateBonus([Bind(Include = "Id,Name,Price,aspNetUser_id,Company")]Bonus bonus)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     db.Bonus.Add(bonus);
+                    
                     db.SaveChanges();
                     return RedirectToAction("Index", "Manage");
                 }
@@ -338,9 +337,14 @@ namespace Task2.Controllers
             }
             return View(bonus);
         }
-        [HttpPost]
+        public ActionResult List()
+        {
+            AspContext db = new AspContext();
+            return View(db.Companies.ToList());
+        }
+        [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "tName,Description,UserImage,Tematic,aspNetUser")]Company company)
+        public ActionResult Create([Bind(Include = "tName,Description,UserImage,Video,Tematic,aspNetUser")]Company company)
         {
             try
             {
@@ -352,10 +356,6 @@ namespace Task2.Controllers
                     
                     db.Companies.Add(company);
                     db.SaveChanges();
-                    /*var Ccompany = db.Companies
-                       // Загрузить покупателя с фамилией "Иванов"
-                    .Where(c => c.ID == company.ID)
-                    .FirstOrDefault();*/
                     company.aspNetUser = id;
                     db.SaveChanges();
                     return RedirectToAction("Index","Manage");
@@ -396,6 +396,19 @@ namespace Task2.Controllers
             return View(courseToUpdate);
         }
 
+
+        public ActionResult ButtonAddBonus1(Company Company)
+        {   var  ID= User.Identity.GetUserId();
+            var  company= db.Companies.Find(Company.ID);
+            var  bonuses= db.Bonus.FirstOrDefault(i=>i.Company==company);
+            var  user = db.AspNetUsers.Find(ID);
+            if (company != null&&user!=null)
+            {
+                user.Bonus.Add(bonuses);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index", "Manage"); 
+        }
         public ActionResult WorkAction(FormCollection formCollection, string action)
         {
             if (action == "Del")
@@ -418,29 +431,7 @@ namespace Task2.Controllers
             
             return RedirectToAction("Index", "Manage");
         }
-        /*  public async Task<ActionResult> Index(ManageMessageId? message)
-          {
-              ViewBag.StatusMessage =
-                  message == ManageMessageId.ChangePasswordSuccess ? "Ваш пароль изменен."
-                  : message == ManageMessageId.SetPasswordSuccess ? "Пароль задан."
-                  : message == ManageMessageId.SetTwoFactorSuccess ? "Настроен поставщик двухфакторной проверки подлинности."
-                  : message == ManageMessageId.Error ? "Произошла ошибка."
-                  : message == ManageMessageId.AddPhoneSuccess ? "Ваш номер телефона добавлен."
-                  : message == ManageMessageId.RemovePhoneSuccess ? "Ваш номер телефона удален."
-                  : "";
-
-              var userId = User.Identity.GetUserId();
-              var model = new IndexViewModel
-              {
-                  HasPassword = HasPassword(),
-                  PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
-                  TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
-                  Logins = await UserManager.GetLoginsAsync(userId),
-                  BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
-              };
-              return View(model);
-          }
-          */
+       
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]
@@ -558,18 +549,19 @@ namespace Task2.Controllers
                 OtherLogins = otherLogins
             });
         }
+        
         public ViewResult Index(string sortOrder, string currentFilter,int? page)
         {
             ViewBag.ListCompanies = this.db.Companies.ToList();
-
-            ViewBag.ListBonus = this.db.Bonus.Include(x => x.aspNetUser).ToList();
+            ViewBag.List = this.db.Companies.ToList();
+            ViewBag.ListBonus = this.db.Bonus.ToList();
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
           //  ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
 
 
-            var companies = from s in db.Companies
-                           select s;
+            var companies = from s in db.Companies 
+                           select s ;
             
             switch (sortOrder)
             {
@@ -589,7 +581,8 @@ namespace Task2.Controllers
 
             int pageSize = 3;
             int pageNumber = (page ?? 1);
-            return View(companies.ToPagedList(pageNumber, pageSize));
+            var ID = User.Identity.GetUserId();
+            return View(companies.Where(u => u.aspNetUser == ID).ToPagedList(pageNumber, pageSize));
         }
 
         //
@@ -676,7 +669,7 @@ namespace Task2.Controllers
             RemovePhoneSuccess,
             Error
         }
-        public JsonResult SendRating(string r, string s, string id, string url)
+      /*  public JsonResult SendRating(string r, string s, string id, string url)
         {
             int autoId = 0;
             Int16 thisVote = 0;
@@ -697,13 +690,13 @@ namespace Task2.Controllers
 
             switch (s)
             {
-                case "5": // school voting
+                case "5": 
                     // check if he has already voted
                     var isIt = db.VoteLogs.Where(v => v.SectionId == sectionId &&
-                       /* v.UserName.Equals(User.Identity.Name, StringComparison.CurrentCultureIgnoreCase) && */v.VoteForId == autoId).FirstOrDefault();
+                       /* v.UserName.Equals(User.Identity.Name, StringComparison.CurrentCultureIgnoreCase) && v.VoteForId == autoId).FirstOrDefault();
                     if (isIt != null)
                     {
-                        // keep the school voting flag to stop voting by this member
+                       
                         HttpCookie cookie = new HttpCookie(url, "true");
                         Response.Cookies.Add(cookie);
                         return Json("<br />You have already rated this post, thanks !");
@@ -718,16 +711,14 @@ namespace Task2.Controllers
                         string[] votes = null;
                         if (obj != null && obj.ToString().Length > 0)
                         {
-                            string currentVotes = obj.ToString(); // votes pattern will be 0,0,0,0,0
+                            string currentVotes = obj.ToString(); 
                             votes = currentVotes.Split(',');
-                            // if proper vote data is there in the database
-                            if (votes.Length.Equals(5))
+                           if (votes.Length.Equals(5))
                             {
-                                // get the current number of vote count of the selected vote, always say -1 than the current vote in the array 
-                                int currentNumberOfVote = int.Parse(votes[thisVote - 1]);
-                                // increase 1 for this vote
+                                 int currentNumberOfVote = int.Parse(votes[thisVote - 1]);
+                            
                                 currentNumberOfVote++;
-                                // set the updated value into the selected votes
+                           
                                 votes[thisVote - 1] = currentNumberOfVote.ToString();
                             }
                             else
@@ -766,7 +757,7 @@ namespace Task2.Controllers
 
                         db.SaveChanges();
 
-                        // keep the school voting flag to stop voting by this member
+                      
                         HttpCookie cookie = new HttpCookie(url, "true");
                         Response.Cookies.Add(cookie);
                     }
@@ -775,6 +766,25 @@ namespace Task2.Controllers
                     break;
             }
             return Json("<br />You rated " + r + " star(s), thanks !");
+        }*/
+        [HttpGet]
+        public ActionResult Search()
+        {
+            var model = new CompanyViewModel { Company = db.Companies };
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Search(CompanyViewModel model)
+        {
+            if (!string.IsNullOrEmpty(model.text))
+            {
+                model.Company = db.Companies.FullTextSearchQuery(model.text);
+            }
+            else
+            {
+                model.Company = db.Companies;
+            }
+            return View(model);
         }
 
         #endregion

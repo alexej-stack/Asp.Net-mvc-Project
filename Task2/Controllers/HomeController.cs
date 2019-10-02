@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Filters.Controllers;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,6 +74,31 @@ namespace Task2.Controllers
             return View();
         }
 
+        public static List<AllCoViewModel> allcompList = new List<AllCoViewModel>();
+        public List<Company> GetCo()
+        {
+            return db.Companies.ToList();
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult AllCompanies(int? page)
+        {
+
+
+            var companies = GetCo();
+            foreach (var comp in companies)
+            {
+
+                allcompList.Add(new AllCoViewModel() { CoId = comp.ID, Description = comp.Description, Title = comp.tName });
+            }
+
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View("AllCompanies", allcompList.ToPagedList(pageNumber, pageSize));
+
+        }
+
         [HttpPost]
         public ActionResult MyAction(FormCollection formCollection, string action)
         {
@@ -132,6 +159,12 @@ namespace Task2.Controllers
         public ActionResult Chat()
         {
             return View();
+        }
+        public ActionResult Title()
+        {
+            ViewBag.ListCompany = this.db.Companies.ToList();
+            return View();
+
         }
     }
 }

@@ -7,7 +7,20 @@
     <title>@ViewBag.Title – KikStarTer</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-   
+    @Scripts.Render("~/bundles/ckeditor")
+    <script>
+        if (Request.Cookies["theme"] == null) {
+            <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
+             }
+        else {
+            if (Request.Cookies["theme"].Value == "dark") {
+                <link href="~/Content/Bootstrap1.css" rel="stylesheet" type="text/css" />
+                     }
+            if (Request.Cookies["theme"].Value == "light") {
+                <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
+                }
+        }
+    </script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -23,8 +36,14 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("AdminPage", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Заглушка", "About", "Home")</li>
-                    <li>@Html.ActionLink("Заглушка", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Title", "Title", "Home")</li>
+                    <li>
+                        <form class="form-inline my-2 my-lg-0">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+
+                        </form>
+                    </li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

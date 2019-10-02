@@ -5,14 +5,15 @@ namespace Task2.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Task2.Models.AspContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Task2.Models.ApplicationDbContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
+            ContextKey = "Task2.Models.ApplicationDbContext";
         }
 
-        protected override void Seed(Task2.Models.AspContext context)
+        protected override void Seed(Task2.Models.ApplicationDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

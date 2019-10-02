@@ -1,0 +1,34 @@
+﻿@model PagedList.IPagedList<Task2.Models.Company>
+@using PagedList.Mvc;
+@using Task2.Controllers
+<link href="~/Content/css/PagedList.css" rel="stylesheet" />
+
+@{
+    HomeController blogCtrl = new HomeController();
+    int comnum = 0;
+}
+<div style="overflow:hidden;width:100%;">
+    <table style="float:right;">
+        <tr>
+            <th>Sort by :</th>
+            
+        </tr>
+    </table>
+</div>
+
+@foreach (var post in Model)
+{
+    comnum++;
+   
+    
+       
+       
+}
+<div id="spacer"></div>
+<div class="paging">
+    <div class="pagenum">
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    </div>
+   
+  
+</div>

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Task2.Models.Company>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+
+
+<table class="table">
+    <tr>
+       
+        <th>
+            Picture
+        </th>
+        
+       
+       
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        
+     
+        <td>
+            @Html.Raw(item.UserImage)
+        </td>
+       
+      
+        
+    
+    </tr>
+}
+
+</table>

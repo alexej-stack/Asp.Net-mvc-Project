@@ -16,11 +16,12 @@ namespace Task2.Models
     {
         public DbSet<VoteLog> VoteLogs { get; set; }
         public DbSet<AspNetUser> AspNetUsers { get; set; }
+      
         public DbSet<Bonus> Bonus { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<CompanyComment> CompanyComments { get; set; }
         public DbSet<Company> Companies { get; set; }
-        public DbSet<AlbumMaster> AlbumMasters { get; set; }
+       // public DbSet<AlbumMaster> AlbumMasters { get; set; }
 
         /*public AspContext(DbContextOptions<AspContext> options)
     : base(options)

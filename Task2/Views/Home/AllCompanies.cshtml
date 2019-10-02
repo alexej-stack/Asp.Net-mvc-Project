@@ -1,0 +1,21 @@
+﻿@model Task2.Models.BigModel
+@using Task2.Controllers
+@using Task2.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+  
+}
+<div class="blogContainer">
+    <div class="mainblogview">
+        @{Html.RenderPartial("Posts", Model.Companies);}
+    </div>
+    <div class="mainblogbar">
+
+    </div>
+        
+</div>
+       
+<div class="mainComments">
+    @{Html.RenderPartial("Comments", Model.Companies);}
+</div>

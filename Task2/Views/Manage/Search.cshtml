@@ -1,0 +1,33 @@
+﻿@model Task2.Models.CompanyViewModel
+@{
+    ViewBag.Title = "Search";
+}
+
+<h2>Search</h2>
+<form method="post">
+    <div class="row form-group">
+        <div class="col-md-7">
+            <input asp-for="@Model.text" class="form-control" id="TextSearchInput" placeholder="Enter Text for Search" />
+        </div>
+        <div class="col-md-5">
+            <button class="btn btn-success" id="=ApplyTextSearchButton"></button>
+        </div>
+    </div>
+</form>
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Desxription</th>
+    </tr>
+    @foreach(var item in Model.Company)
+    {
+        var values = new string[] { item.tName, item.Description };
+        <tr>
+            @foreach(var value in values)
+            { <td>
+                 @value
+                 <eq-highlight-text text="@Model.text" value="@value"></eq-highlight-text>
+                 </td>}
+        </tr>
+    }
+</table>

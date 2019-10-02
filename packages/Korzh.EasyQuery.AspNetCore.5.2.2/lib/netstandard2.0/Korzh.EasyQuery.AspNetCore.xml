@@ -1,0 +1,410 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Korzh.EasyQuery.AspNetCore</name>
+    </assembly>
+    <members>
+        <member name="T:Korzh.EasyQuery.AspNetCore.EqControllerBaseExtentions">
+            <summary>
+            Contains useful expression which allows to build some specific IActionResult objects.
+            </summary>
+        </member>
+        <member name="M:Korzh.EasyQuery.AspNetCore.EqControllerBaseExtentions.EqOk(Microsoft.AspNetCore.Mvc.ControllerBase,System.Object)">
+            <summary>
+            An extension function which returns an action result with 200 (OK) status code and some additional data (in JSON) in the response body.
+            </summary>
+            <param name="controller">The controller.</param>
+            <param name="data">The data to place to the response body.</param>
+            <returns>EqOkResult.</returns>
+        </member>
+        <member name="T:Korzh.EasyQuery.AspNetCore.EqOkResult">
+            <summary>
+            Represents a special kind of <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult" /> which allows to build an OK (status code 200) response with some extra data
+            Implements the 
+            </summary>
+            <seealso cref="T:Microsoft.AspNetCore.Mvc.ActionResult" />
+        </member>
+        <member name="F:Korzh.EasyQuery.AspNetCore.EqOkResult.Data">
+            <summary>
+            The data which should be added to the response body.
+            </summary>
+        </member>
+        <member name="M:Korzh.EasyQuery.AspNetCore.EqOkResult.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Korzh.EasyQuery.AspNetCore.EqOkResult"/> class.
+            </summary>
+        </member>
+        <member name="M:Korzh.EasyQuery.AspNetCore.EqOkResult.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Korzh.EasyQuery.AspNetCore.EqOkResult"/> class.
+            </summary>
+            <param name="data">The extra data which must be addd to the response body.</param>
+        </member>
+        <member name="M:Korzh.EasyQuery.AspNetCore.EqOkResult.ExecuteResultAsync(Microsoft.AspNetCore.Mvc.ActionContext)">
+            <summary>
+            Executes the result operation of the action method asynchronously. This method is called by MVC to process
+            the result of an action method.
+            The default implementation of this method calls the <see cref="M:Microsoft.AspNetCore.Mvc.ActionResult.ExecuteResult(Microsoft.AspNetCore.Mvc.ActionContext)" /> method and
+            returns a completed task.
+            </summary>
+            <param name="context">The context in which the result is executed. The context information includes
+            information about the action that was executed and request information.</param>
+            <returns>A task that represents the asynchronous execute operation.</returns>
+        </member>
+        <member name="M:Korzh.EasyQuery.AspNetCore.EqOkResult.ExecuteResult(Microsoft.AspNetCore.Mvc.ActionContext)">
+            <summary>
+            Executes the result operation of the action method synchronously. This method is called by MVC to process
+            the result of an action method.
+            </summary>
+            <param name="context">The context in which the result is executed. The context information includes
+            information about the action that was executed and request information.</param>
+        </member>
+        <member name="M:Korzh.EasyQuery.AspNetCore.EqOkResult.WriteResponseAsync(Microsoft.AspNetCore.Http.HttpResponse)">
+            <summary>
+            Write the response as an asynchronous operation.
+            </summary>
+            <param name="response">An <see cref="T:Microsoft.AspNetCore.Http.HttpResponse"/> object which we are going to save our content to.</param>
+            <returns>Task.</returns>
+        </member>
+        <member name="M:Korzh.EasyQuery.AspNetCore.EqOkResult.WriteDataToJsonAsync(Newtonsoft.Json.JsonWriter)">
+            <summary>
+            Write the extra data to JsonWriter.
+            </summary>
+            <param name="writer">An instance of JsonWriter .</param>
+            <returns>Task.</returns>
+        </member>
+        <member name="T:Korzh.EasyQuery.AspNetCore.EqHtmlHelpers">
+            <summary>
+            	Extension methods for generating query panel and paging placeholders.
+            </summary>
+        </member>
+        <member name="M:Korzh.EasyQuery.AspNetCore.EqHtmlHelpers.PageNavigator(Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper,Korzh.EasyQuery.Services.IPaging)">
+            <summary>
+            Renders the placeholder for the configurable paging control.
+            </summary>
+            <param name="html">This method is meant to hook off HtmlHelper as an extension method.</param>
+            <param name="paging">The object which implements IPaging interface.</param>
+            <returns>Outputs the paging control HTML.</returns>
+        </member>
+        <member name="M:Korzh.EasyQuery.AspNetCore.EqHtmlHelpers.FilterBar(Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper,System.Object)">
+            <summary>
+            Renders the placeholder for QueryPanel widget.
+            </summary>
+            <param name="html">This method is meant to hook off HtmlHelper as an extension method.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns>Outputs HTML for the QueryPanel widget placeholder.</returns>
+        </member>
+        <member name="M:Korzh.EasyQuery.AspNetCore.EqHtmlHelpers.DisplayNameFor``2(Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper{Korzh.EasyQuery.Services.IPagedList{``0}},System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            Gets the display name for the model.
+            </summary>
+            <typeparam name="TModel">The type of the model.</typeparam>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="html">The HTML helper instance that this method extends.</param>
+            <param name="expression">An expression that identifies the object that contains the display name.</param>
+            <returns>The display name for the model.</returns>        
+        </member>
+        <member name="T:Korzh.EasyQuery.AspNetCore.ListViewOptions">
+            <summary>
+            Represents different options passed in list action requests 
+            </summary>
+        </member>
+        <member name="P:Korzh.EasyQuery.AspNetCore.ListViewOptions.PageIndex">
+            <summary>
+            Gets or sets the page number (started from 1)
+            </summary>
+            <value>The page number.</value>
+        </member>
+        <member name="P:Korzh.EasyQuery.AspNetCore.ListViewOptions.SortBy">
+            <summary>
+            Gets or sets the name of sorting column.
+            </summary>
+            <value>The name of sorting column.</value>
+        </member>
+        <member name="M:Korzh.EasyQuery.AspNetCore.ListViewOptions.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Korzh.EasyQuery.AspNetCore.ListViewOptions"/> class.
+            </summary>
+        </member>
+        <member name="T:Korzh.EasyQuery.AspNetCore.EqMvcExtensions">
+            <summary>
+            Contains several useful extension methods for working with EasyQuery types in MVC applications
+            </summary>
+        </member>
+        <member name="M:Korzh.EasyQuery.AspNetCore.EqMvcExtensions.ToPagedList``1(System.Linq.IQueryable{``0},System.Int64,System.Int64)">
+            <summary>
+            Converts an IQueryable list to <see cref="T:Korzh.EasyQuery.Service.IPageList"/>.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="superset">The list to be converted.</param>
+            <param name="pageIndex">Index of the page (started from 1).</param>
+            <param name="pageSize">Size of the page.</param>
+            <returns>IPagedList&lt;T&gt;.</returns>
+        </member>
+        <member name="M:Korzh.EasyQuery.AspNetCore.EqMvcExtensions.ToListViewOptions(System.String)">
+            <summary>
+            Converts JSON string to <see cref="T:ListViewOptions"/> object.
+            </summary>
+            <param name="json">The JSON string.</param>
+            <returns>ListViewOptions.</returns>
+        </member>
+        <member name="M:Korzh.EasyQuery.AspNetCore.EqMvcExtensions.ToListViewOptions(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Converts JSON definition of the list options to a <see cref="T:ListViewOptions"/> object.
+            </summary>
+            <param name="jObject">The dictionary that contains a JSON definition of the list view options.</param>
+            <returns>ListViewOptions.</returns>
+        </member>
+        <member name="T:Korzh.EasyQuery.AspNetCore.HighlightSelectedTextTagHelper">
+            <summary>
+            Represents a tag helper which allows to highlight the found pieces on the page.
+            Implements the <see cref="T:Microsoft.AspNetCore.Razor.TagHelpers.TagHelper" />
+            </summary>
+            <seealso cref="T:Microsoft.AspNetCore.Razor.TagHelpers.TagHelper" />
+        </member>
+        <member name="P:Korzh.EasyQuery.AspNetCore.HighlightSelectedTextTagHelper.Value">
+            <summary>
+            Gets or sets the value.
+            </summary>
+            <value>The value.</value>
+        </member>
+        <member name="P:Korzh.EasyQuery.AspNetCore.HighlightSelectedTextTagHelper.Text">
+            <summary>
+            Gets or sets the text.
+            </summary>
+            <value>The text.</value>
+        </member>
+        <member name="M:Korzh.EasyQuery.AspNetCore.HighlightSelectedTextTagHelper.Process(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext,Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Synchronously executes the <see cref="T:Microsoft.AspNetCore.Razor.TagHelpers.TagHelper" /> with the given <paramref name="context" /> and
+            <paramref name="output" />.
+            </summary>
+            <param name="context">Contains information associated with the current HTML tag.</param>
+            <param name="output">A stateful HTML element used to generate an HTML tag.</param>
+        </member>
+        <member name="T:Korzh.EasyQuery.AspNetCore.EasyQueryMiddleware">
+            <summary>
+            Represents the middleware which processes all requests from EasyQuery client-side widgets
+            </summary>
+        </member>
+        <member name="M:Korzh.EasyQuery.AspNetCore.EasyQueryMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Korzh.EasyQuery.Services.EasyQueryOptions)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Korzh.EasyQuery.AspNetCore.EasyQueryMiddleware"/> class.
+            </summary>
+            <param name="next">The next.</param>
+            <param name="options">The options.</param>
+        </member>
+        <member name="M:Korzh.EasyQuery.AspNetCore.EasyQueryMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            The method which is called during the processing of incoming HTTP request.
+            </summary>
+            <param name="context">The HTTP context.</param>
+            <returns>Task.</returns>
+            <exception cref="T:Korzh.EasyQuery.Services.EasyQueryManagerException">
+            EasyQueryManagerResolver is not defined." +
+            or
+            Can't find EasyQuery Service
+            </exception>
+        </member>
+        <member name="T:Korzh.EasyQuery.Services.EasyQueryOptionsExtentionsAuth">
+            <summary>
+            Contains several extension methods which simplifies the registration 
+            of the default authorithation provider for EasyQuery actions.
+            </summary>
+        </member>
+        <member name="M:Korzh.EasyQuery.Services.EasyQueryOptionsExtentionsAuth.UseDefaultAuthProvider(Korzh.EasyQuery.Services.EasyQueryOptions)">
+            <summary>
+            Registers the defaul authentication provider - a function (resolver) 
+            that returns and instance of <see cref="T:Korzh.EasyQuery.Services.DefaultEqAuthProvider"/> class.
+            </summary>
+            <param name="options">An instance of EasyQueryOptions class.</param>
+        </member>
+        <member name="M:Korzh.EasyQuery.Services.EasyQueryOptionsExtentionsAuth.UseDefaultAuthProvider(Korzh.EasyQuery.Services.EasyQueryOptions,System.Action{Korzh.EasyQuery.Services.DefaultEqAuthProvider})">
+            <summary>
+            Registers the defaul authentication provider - a function (resolver)
+            that returns and instance of <see cref="T:Korzh.EasyQuery.Services.DefaultEqAuthProvider" /> class.
+            </summary>
+            <param name="options">An instance of EasyQueryOptions class.</param>
+            <param name="tuner">An action which allows to make some changes in the default auth provider.</param>
+            <exception cref="T:System.ArgumentNullException">tuner</exception>
+        </member>
+        <member name="M:Korzh.EasyQuery.Services.EasyQueryOptionsExtentionsAuth.AddPreExecuteTunningWithHttpContext(Korzh.EasyQuery.Services.EasyQueryOptions,System.Action{Korzh.EasyQuery.Services.EasyQueryManager,Microsoft.AspNetCore.Http.HttpContext})">
+            <summary>
+            Adds an action which allows to tune EasyQueryManager (e.g. add some conditions to the current query) before query execution.
+            This action can take into the account the current HTTP context (request parameters, current user) passed in the parameter.
+            </summary>
+            <param name="options">An instance of EasyQueryOptions class.</param>
+            <param name="tunningAction">An action which can change something inside EasyQueryManager before query execution</param>
+        </member>
+        <member name="T:Korzh.EasyQuery.Services.DefaultEqAuthProvider">
+            <summary>
+            The default implementation of the <see cref="T:Korzh.EasyQuery.Services.IEqAuthProvider" /> interface.
+            Contains several methods which allow to mark some EasyQuery actions as "anonymous" (so they can be accessed by any user)
+            and to restrict the access to them depening on user role.
+            </summary>
+        </member>
+        <member name="F:Korzh.EasyQuery.Services.DefaultEqAuthProvider.EqManagerRole">
+            <summary>
+            The default ID for "EasyQuery Manager" role
+            The user with this role can access the actions which modify queries in the storage.
+            </summary>
+        </member>
+        <member name="F:Korzh.EasyQuery.Services.DefaultEqAuthProvider.User">
+            <summary>
+            The current user
+            </summary>
+        </member>
+        <member name="F:Korzh.EasyQuery.Services.DefaultEqAuthProvider.ActionGuards">
+            <summary>
+            Contains the dictionary of action guards. 
+            Each EasyQuery action has a function (guard) which return true if this action can be accessed by the current user
+            </summary>
+        </member>
+        <member name="M:Korzh.EasyQuery.Services.DefaultEqAuthProvider.#ctor(System.IServiceProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Korzh.EasyQuery.Services.DefaultEqAuthProvider"/> class.
+            </summary>
+            <param name="services">The DI service provider.</param>
+        </member>
+        <member name="M:Korzh.EasyQuery.Services.DefaultEqAuthProvider.IsAuthorizedAsync(Korzh.EasyQuery.Services.EasyQueryManager,System.String)">
+            <summary>
+            Determines whether the current user can get access to the the specified action.
+            </summary>
+            <param name="eqManager">The current EasyQueryManager.</param>
+            <param name="action">The action as a string constant.
+            The full list of actions is listed in <see cref="T:Korzh.EasyQuery.Services.EqAction" /> class</param>
+            <returns>Task&lt;System.Boolean&gt;.
+            <c>true</c> if the current user is authorized. Otherwise - <c>true</c></returns>
+        </member>
+        <member name="M:Korzh.EasyQuery.Services.DefaultEqAuthProvider.AllowAnonymous(System.String[])">
+            <summary>
+            Sets anonymous access for the actions specified in the parameter. 
+            </summary>
+            <param name="actions">The list actions.</param>
+            <returns>The same instance of the DefaultEqAuthProvider class - to allow method chaining.</returns>
+        </member>
+        <member name="M:Korzh.EasyQuery.Services.DefaultEqAuthProvider.RequireAuthorization(System.String[])">
+            <summary>
+            Sets the restricted access for the specified actions (only authorized users can access them).
+            </summary>
+            <param name="actions">The list of actions.</param>
+            <returns>The same instance of the DefaultEqAuthProvider class - to allow method chaining.</returns>
+        </member>
+        <member name="M:Korzh.EasyQuery.Services.DefaultEqAuthProvider.GrantAccessForRoles(System.String,System.String[])">
+            <summary>
+            Grants the access to specified action for one more roles passed in the second parameter.
+            </summary>
+            <param name="action">The action we want to grant the access to.</param>
+            <param name="roles">The list of roles.</param>
+            <returns>The same instance of the DefaultEqAuthProvider class - to allow method chaining.</returns>
+        </member>
+        <member name="M:Korzh.EasyQuery.Services.DefaultEqAuthProvider.RequireRole(System.String,System.String[])">
+            <summary>
+            Restricts the access to the actions specified in the second parameter by the user role passed in the first parameter.
+            </summary>
+            <param name="role">The role which grants access to the actions.</param>
+            <param name="actions">The list actions.</param>
+            <returns>The same instance of the DefaultEqAuthProvider class - to allow method chaining.</returns>
+        </member>
+        <member name="M:Korzh.EasyQuery.Services.DefaultEqAuthProvider.GetAuthorizedGuard">
+            <summary>
+            Gets the guard functions which returnc <c>true</c> only if the current user is authenticated.
+            </summary>
+            <returns>Func&lt;System.Boolean&gt;.</returns>
+        </member>
+        <member name="M:Korzh.EasyQuery.Services.DefaultEqAuthProvider.GetGrantAccessForRolesGuard(System.String[])">
+            <summary>
+            Gets the guard functions which grants access only for users with the specifeid roles.
+            </summary>
+            <param name="roles">The roles.</param>
+            <returns>Func&lt;System.Boolean&gt;.</returns>
+        </member>
+        <member name="M:Korzh.EasyQuery.Services.DefaultEqAuthProvider.FillDefaultActionGuards">
+            <summary>
+            Fills the <see cref="F:Korzh.EasyQuery.Services.DefaultEqAuthProvider.ActionGuards"/> list with the default guards.
+            The default setup includes the following 2 rules:
+            1. All actions requires authorization.
+            2. NewQuery, SaveQuery and RemoveQuery actions requires also the "EasyQuery Manager" (`eqmanager`) role.
+            </summary>
+        </member>
+        <member name="T:Korzh.EasyQuery.Services.EqSessionCachingService">
+            <summary>
+            Represents an implemenation of <see cref="T:Korzh.EasyQuery.Services.IEqCachingService" />
+            which uses Session for storing cached objects.
+            </summary>
+            <seealso cref="T:Korzh.EasyQuery.Services.IEqCachingService" />
+        </member>
+        <member name="M:Korzh.EasyQuery.Services.EqSessionCachingService.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Korzh.EasyQuery.Services.EqSessionCachingService"/> class.
+            </summary>
+            <param name="httpContextAccessor">The HTTP context accessor.</param>
+        </member>
+        <member name="M:Korzh.EasyQuery.Services.EqSessionCachingService.GetValue(System.String)">
+            <summary>
+            Gets the value from the cache.
+            </summary>
+            <param name="key">The key.</param>
+            <returns>System.String.</returns>
+        </member>
+        <member name="M:Korzh.EasyQuery.Services.EqSessionCachingService.PutValue(System.String,System.String)">
+            <summary>
+            Puts the value to the cache
+            </summary>
+            <param name="key">The key.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="T:Microsoft.AspNetCore.Builder.EasyQueryMiddlewareExtensions">
+            <summary>
+            Contains the method which adds EasyQueryMiddleware to the pipeline.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.EasyQueryMiddlewareExtensions.UseEasyQuery(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.Action{Korzh.EasyQuery.Services.EasyQueryOptions})">
+            <summary>
+            Adds the EasyQueryMiddleware to the middleware pipeline.
+            </summary>
+            <param name="appBuilder">The application builder.</param>
+            <param name="optionsAction">An action which allows to define the middleware options.</param>
+            <returns>IApplicationBuilder.</returns>
+        </member>
+        <member name="T:Microsoft.AspNetCore.Http.HttpResponseExtensions">
+            <summary>
+            Class HttpResponseExtensions.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Http.HttpResponseExtensions.WriteJsonAsync(Microsoft.AspNetCore.Http.HttpResponse,System.Object)">
+            <summary>
+            Serializes and object to JSON and writes it to the HTTP response.
+            </summary>
+            <param name="response">The response object.</param>
+            <param name="data">An object to write to the HTTP response.</param>
+            <returns>Task.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Http.HttpResponseExtensions.WriteObject(Newtonsoft.Json.JsonWriter,System.Object)">
+            <summary>
+            Serializes and object to JSON and writes it to the JsonWriter.
+            </summary>
+            <param name="jsonWriter">An instance of JsonWriter </param>
+            <param name="data">An object to write to JsonWriter.</param>
+        </member>
+        <member name="T:Microsoft.Extensions.DependencyInjection.EasyQueryServicesBuilderExtensionsAspNetCore">
+            <summary>
+            Contains several extension methods which simplifies EasyQuery services registration in the DI.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.EasyQueryServicesBuilderExtensionsAspNetCore.AddEasyQuery(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Registers EasyQuery services in the DI container.
+            </summary>
+            <param name="services">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> to add services to.</param>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.EasyQueryServicesBuilderExtensionsAspNetCore.UseSessionCache(Microsoft.Extensions.DependencyInjection.EasyQueryServicesBuilder)">
+            <summary>
+            Adds <see cref="T:Korzh.EasyQuery.Services.EqSessionCachingService"/> implementation of the <see cref="T:Korzh.EasyQuery.Services.IEqCachingService"/> to the DI container.
+            DO NOT forget to turn on session in your application
+            </summary>
+            <param name="builder"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
